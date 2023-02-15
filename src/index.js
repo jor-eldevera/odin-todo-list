@@ -26,14 +26,15 @@ class Project {
     /**
      * Adds a TodoItem to this project's todoItems array
      * @param {*} title - The title of the TodoItem
+     * @param {*} id - The id of the TodoItem
      * @param {*} description - The description of the TodoItem
      * @param {*} dueDate - The due date of the TodoItem
      * @param {*} priority - The priority level of the TodoItem
      * @returns null if there's error, undefined if successful
      */
-    addTodoItem(title, description, dueDate, priority) {
+    addTodoItem(title, id, description, dueDate, priority) {
         // Check if a todo item with the same title is already in this list
-        if (this.searchItems(title)) {
+        if (this.searchItems(id)) {
             console.log("There is already an item in this list with the title: " + title);
             return;
         }
@@ -44,7 +45,11 @@ class Project {
             return;
         }
 
-        this.todoItems.push(new TodoItem(title, description, dueDate, priority));
+        this.todoItems.push(new TodoItem(title, id, description, dueDate, priority));
+    }
+
+    editTodoItem(title, id, description, dueDate, priority) {
+
     }
 
     /**
@@ -52,9 +57,9 @@ class Project {
      * @param {*} title - The title of the TodoItem
      * @returns The found TodoItem or null if the item isn't found
      */
-    searchItems(title) {
+    searchItems(id) {
         for (let item of this.todoItems) {
-            if (item.title === title) {
+            if (item.id === id) {
                 return item;
             }
         }
@@ -64,8 +69,9 @@ class Project {
 }
 
 class TodoItem {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, id, description, dueDate, priority) {
         this.title = title;
+        this.id = id;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
@@ -74,9 +80,8 @@ class TodoItem {
 
 // some test code
 let testProject = new Project();
-testProject.addTodoItem("testTitle", "testDesc", "January 14th, 2023", 2);
-testProject.addTodoItem("TestTitle", "TestDesc", "January 14th, 2023", 3);
-console.log(testProject.addTodoItem("TESTTitle", "TestDesc", "January 14th, 2023", 2));
+testProject.addTodoItem("testTitle", 24601, "testDesc", "January 14th, 2023", 2);
+testProject.addTodoItem("TestTitle", 69, "TestDesc", "January 14th, 2023", 3);
 console.log(testProject.todoItems);
 
 // Add event listener to the new project button
@@ -119,12 +124,19 @@ function createProject() {
  * @returns a new todo item
  */
 function createTodoItem(newProject) {
+    const todoItemWrapper = document.createElement("div");
+
     const newTodoItem = document.createElement("input");
     newTodoItem.setAttribute("placeholder", "New item");
     newTodoItem.addEventListener("input", function (e) {
-        newProject.addTodoItem(e.target.value, "", "", "");
+        newProject.editTodoItem(e.target.value, "", "", "");
     }, false);
     newTodoItem.classList.add("newTodoItem");
+    todoItemWrapper.appendChild(newTodoItem);
 
-    return newTodoItem;
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    todoItemWrapper.appendChild(checkbox);
+
+    return todoItemWrapper;
 }
