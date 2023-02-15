@@ -4,11 +4,23 @@ class Project {
     todoItems = [];
 
     constructor(title) {
-        this.title = title;
+        if (title === undefined) {
+            this._projectTitle = "";
+        } else {
+            this._projectTitle = title;
+        }
     }
 
     get todoItems() {
         return this.todoItems;
+    }
+
+    get title() {
+        return this._projectTitle;
+    }
+
+    set title(title) {
+        this._projectTitle = title;
     }
 
     /**
@@ -60,8 +72,34 @@ class TodoItem {
     }
 }
 
-let newProject = new Project();
-newProject.addTodoItem("testTitle", "testDesc", "January 14th, 2023", 2);
-newProject.addTodoItem("TestTitle", "TestDesc", "January 14th, 2023", 3);
-console.log(newProject.addTodoItem("TESTTitle", "TestDesc", "January 14th, 2023", 2));
-console.log(newProject.todoItems);
+// some test code
+let testProject = new Project();
+testProject.addTodoItem("testTitle", "testDesc", "January 14th, 2023", 2);
+testProject.addTodoItem("TestTitle", "TestDesc", "January 14th, 2023", 3);
+console.log(testProject.addTodoItem("TESTTitle", "TestDesc", "January 14th, 2023", 2));
+console.log(testProject.todoItems);
+
+// Add event listener to the new project button
+document.getElementById("newProjectBtn").addEventListener("click", createProject, false);
+
+/**
+ * Create a new project card
+ */
+function createProject() {
+    let newProject = new Project();
+
+    const projectCard = document.createElement("div");
+    projectCard.classList.add("projectCard");
+    
+    const projectTitle = document.createElement("input");
+    // projectTitle.innerHTML = "test";
+    projectTitle.setAttribute("placeholder", "Title");
+    projectTitle.classList.add("projectTitle");
+    // projectTitle.setAttribute("contenteditable", "true");
+    projectTitle.addEventListener("input", function (e) {
+        newProject.title = e.target.value;
+    }, false);
+    projectCard.appendChild(projectTitle);
+
+    document.querySelector("#content").appendChild(projectCard);
+}
