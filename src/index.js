@@ -88,18 +88,43 @@ document.getElementById("newProjectBtn").addEventListener("click", createProject
 function createProject() {
     let newProject = new Project();
 
+    // projectCard div wraps the project
     const projectCard = document.createElement("div");
     projectCard.classList.add("projectCard");
     
     const projectTitle = document.createElement("input");
-    // projectTitle.innerHTML = "test";
     projectTitle.setAttribute("placeholder", "Title");
     projectTitle.classList.add("projectTitle");
-    // projectTitle.setAttribute("contenteditable", "true");
     projectTitle.addEventListener("input", function (e) {
-        newProject.title = e.target.value;
+        newProject.title = e.target.value; // editable title
     }, false);
     projectCard.appendChild(projectTitle);
 
+    const newTodoItemBtn = document.createElement("button");
+    newTodoItemBtn.innerHTML = "+";
+    newTodoItemBtn.addEventListener("click", function (e) {
+        // Create empty todo item
+        const newTodoItem = createTodoItem(newProject);
+        // Make the todo item a child of the projectCard
+        projectCard.appendChild(newTodoItem);
+    }, false);
+    newTodoItemBtn.classList.add("newTodoItemBtn");
+    projectCard.appendChild(newTodoItemBtn);
+    
     document.querySelector("#content").appendChild(projectCard);
+}
+
+/**
+ * Create a new todo item for the DOM
+ * @returns a new todo item
+ */
+function createTodoItem(newProject) {
+    const newTodoItem = document.createElement("input");
+    newTodoItem.setAttribute("placeholder", "New item");
+    newTodoItem.addEventListener("input", function (e) {
+        newProject.addTodoItem(e.target.value, "", "", "");
+    }, false);
+    newTodoItem.classList.add("newTodoItem");
+
+    return newTodoItem;
 }
