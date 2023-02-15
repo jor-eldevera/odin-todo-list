@@ -24,32 +24,30 @@ class Project {
     }
 
     /**
-     * Adds a TodoItem to this project's todoItems array
-     * @param {*} title - The title of the TodoItem
-     * @param {*} id - The id of the TodoItem
-     * @param {*} description - The description of the TodoItem
-     * @param {*} dueDate - The due date of the TodoItem
-     * @param {*} priority - The priority level of the TodoItem
-     * @returns null if there's error, undefined if successful
+     * Adds a new todo-item to the todoItems array
+     * @returns the id of the new todo-item
      */
-    addTodoItem(title, id, description, dueDate, priority) {
-        // Check if a todo item with the same title is already in this list
+    addNewTodoItem() {
+        const id = Math.floor(Math.random() * 10000);
+
         if (this.searchItems(id)) {
-            console.log("There is already an item in this list with the title: " + title);
+            console.log("There is already an item in this list with the id: " + id);
             return;
         }
 
-        // Check if todo item has a title
-        if (!title || title === "") {
-            console.log("Todo item must have a title");
-            return;
-        }
+        this.todoItems.push(new TodoItem("", id, "", "", ""));
 
-        this.todoItems.push(new TodoItem(title, id, description, dueDate, priority));
+        return id;
     }
 
-    editTodoItem(title, id, description, dueDate, priority) {
-
+    /**
+     * Edits the title of a todo-item
+     * @param {*} title is the new title
+     * @param {*} id is the id of the todo-item to be changed
+     */
+    editTodoItemTitle(title, id) {
+        let item = this.searchItems(id);
+        item.title = title;
     }
 
     /**
@@ -77,12 +75,6 @@ class TodoItem {
         this.priority = priority;
     }
 }
-
-// some test code
-let testProject = new Project();
-testProject.addTodoItem("testTitle", 24601, "testDesc", "January 14th, 2023", 2);
-testProject.addTodoItem("TestTitle", 69, "TestDesc", "January 14th, 2023", 3);
-console.log(testProject.todoItems);
 
 // Add event listener to the new project button
 document.getElementById("newProjectBtn").addEventListener("click", createProject, false);
@@ -126,10 +118,12 @@ function createProject() {
 function createTodoItem(newProject) {
     const todoItemWrapper = document.createElement("div");
 
+    const id = newProject.addNewTodoItem();
+
     const newTodoItem = document.createElement("input");
     newTodoItem.setAttribute("placeholder", "New item");
     newTodoItem.addEventListener("input", function (e) {
-        newProject.editTodoItem(e.target.value, "", "", "");
+        newProject.editTodoItemTitle(e.target.value, id);
     }, false);
     newTodoItem.classList.add("newTodoItem");
     todoItemWrapper.appendChild(newTodoItem);
