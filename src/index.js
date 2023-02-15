@@ -52,7 +52,7 @@ class Project {
 
     /**
      * Searches for a TodoItem in this project's todoItems array
-     * @param {*} title - The title of the TodoItem
+     * @param {*} id - The id of the TodoItem
      * @returns The found TodoItem or null if the item isn't found
      */
     searchItems(id) {
@@ -108,7 +108,7 @@ function createProject() {
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
     
-    document.querySelector("#content").appendChild(projectCard);
+    document.querySelector("#projects").appendChild(projectCard);
 }
 
 /**
@@ -117,6 +117,7 @@ function createProject() {
  */
 function createTodoItem(newProject) {
     const todoItemWrapper = document.createElement("div");
+    todoItemWrapper.classList.add("todoItemWrapper");
 
     const id = newProject.addNewTodoItem();
 
