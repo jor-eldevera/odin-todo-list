@@ -41,7 +41,7 @@ class Project {
             return;
         }
 
-        this.todoItems.push(new TodoItem("", id, "", "", ""));
+        this.todoItems.push(new TodoItem("", id, this._projectTitle, "", ""));
 
         return id;
     }
@@ -75,10 +75,10 @@ class Project {
 class TodoItem {
     complete = false;
 
-    constructor(title, id, description, dueDate, priority) {
+    constructor(title, id, category, dueDate, priority) {
         this.title = title;
         this.id = id;
-        this.description = description;
+        this.category = category;
         this.dueDate = dueDate;
         this.priority = priority;
     }
@@ -168,17 +168,21 @@ function createTodoItem(newProject) {
 
     const id = newProject.addNewTodoItem();
 
-    const newTodoItem = document.createElement("input");
-    newTodoItem.setAttribute("placeholder", "New item");
-    newTodoItem.addEventListener("input", function (e) {
+    const todoItemLeftSide = document.createElement("input");
+    todoItemLeftSide.setAttribute("placeholder", "New item");
+    todoItemLeftSide.addEventListener("input", function (e) {
         newProject.editTodoItemTitle(e.target.value, id);
     }, false);
-    newTodoItem.classList.add("newTodoItem");
-    todoItemWrapper.appendChild(newTodoItem);
+    todoItemLeftSide.classList.add("todoItemLeftSide");
+    todoItemWrapper.appendChild(todoItemLeftSide);
+
+    const todoItemRightSide = document.createElement("div");
+    todoItemRightSide.classList.add("todoItemRightSide");
+    todoItemWrapper.appendChild(todoItemRightSide);
 
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
-    todoItemWrapper.appendChild(checkbox);
+    todoItemRightSide.appendChild(checkbox);
 
     return todoItemWrapper;
 }
