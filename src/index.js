@@ -1,14 +1,20 @@
 import "./style.css"
 
+const projectsDiv = document.querySelector("#projects");
+
+let projects = [];
+
 class Project {
     todoItems = [];
 
-    constructor(title) {
+    constructor(title, titleIsEditable) {
         if (title === undefined) {
             this._projectTitle = "";
         } else {
             this._projectTitle = title;
         }
+
+        this._titleIsEditable = titleIsEditable
     }
 
     get todoItems() {
@@ -108,9 +114,39 @@ function createProject() {
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
 
-    document.querySelector("#projects").appendChild(projectCard);
+    projectsDiv.appendChild(projectCard);
 }
-createProject();
+// createProject();
+
+function createAllTodosProject() {
+    let newProject = new Project("All todo-items", false);
+
+    // projectCard div wraps the project
+    const projectCard = document.createElement("div");
+    projectCard.classList.add("projectCard");
+
+    const projectTitle = document.createElement("input");
+    projectTitle.setAttribute("placeholder", "Title");
+    projectTitle.classList.add("projectTitle");
+    projectTitle.value = "All todo-items"
+    projectTitle.readOnly = true;
+    projectCard.appendChild(projectTitle);
+
+    const newTodoItemBtn = document.createElement("button");
+    newTodoItemBtn.innerHTML = "+";
+    newTodoItemBtn.addEventListener("click", function (e) {
+        // Create empty todo item
+        const newTodoItem = createTodoItem(newProject);
+        // Make the todo item a child of the projectCard
+        projectCard.appendChild(newTodoItem);
+    }, false);
+    newTodoItemBtn.classList.add("newTodoItemBtn");
+    projectCard.appendChild(newTodoItemBtn);
+
+    projects.push(newProject);
+    return projectCard;
+}
+projectsDiv.appendChild(createAllTodosProject());
 
 /**
  * Create a new todo item for the DOM
