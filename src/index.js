@@ -107,9 +107,10 @@ function createProject() {
     }, false);
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
-    
+
     document.querySelector("#projects").appendChild(projectCard);
 }
+createProject();
 
 /**
  * Create a new todo item for the DOM
