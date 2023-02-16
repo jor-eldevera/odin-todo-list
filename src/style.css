@@ -9,6 +9,9 @@ body {
 
 header {
 	padding: 10px 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+	position: relative;
 }
 
 h1 {
@@ -43,6 +46,8 @@ h1 {
 
 	width: 40%;
 	margin: 0px auto;
+	padding: 10px;
+	background-color: white;
 }
 
 .projectCard {
