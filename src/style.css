@@ -1,7 +1,48 @@
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	margin: 0px;
+}
+
+header {
+	padding: 10px 10px;
+}
+
+h1 {
+	margin: 0px;
+}
+
+#body-container {
+	display: flex;
+	background-color: #f1f2f6;
+	height: calc(100vh - 39px);
+}
+
+#left-sidebar {
+	width: 164px;
+	border-right: 1px solid lightgray;
+	padding: 10px 10px;
+}
+
+#newProjectBtn {
+	margin: 0 auto;
+}
+
+#content {
+	width: calc(100% - 164px);
+	padding: 10px 10px;
+}
+
 #projects {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
     gap: 15px;
+
+	width: 40%;
+	margin: 0px auto;
 }
 
 .projectCard {
