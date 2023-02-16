@@ -27,7 +27,16 @@ h1 {
 #left-sidebar {
 	width: 164px;
 	border-right: 1px solid lightgray;
-	padding: 10px 10px;
+}
+
+#top-left-sidebar {
+	height: 150px;
+	border-bottom: 1px solid lightgray;
+	padding: 10px;
+}
+
+#bottom-left-sidebar {
+	padding: 10px;
 }
 
 #newProjectBtn {
