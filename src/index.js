@@ -73,12 +73,22 @@ class Project {
 }
 
 class TodoItem {
+    complete = false;
+
     constructor(title, id, description, dueDate, priority) {
         this.title = title;
         this.id = id;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+    }
+
+    get complete() {
+        return this.complete;
+    }
+
+    set complete(isComplete) {
+        this.complete = isComplete;
     }
 }
 
