@@ -1,6 +1,6 @@
 import "./style.css"
 
-const projectsDiv = document.querySelector("#projects");
+const projectsDiv = document.querySelector("#projects"); // div in the center of the page
 
 let projects = [];
 
@@ -93,14 +93,31 @@ class TodoItem {
 }
 
 // Add event listener to the new project button
-document.getElementById("newProjectBtn").addEventListener("click", createProject, false);
+document.getElementById("newProjectBtn").addEventListener("click", function (e) {
+    // Create a new project
+    let newProject = new Project();
+    
+    // Create a project card
+    const projectCard = createProject(newProject);
+    projectsDiv.appendChild(projectCard);
+
+    // Create new button in the sidebar
+    const projectButton = createProjectButton(newProject);
+    const newProjectsDiv = document.getElementById("new-projects-sidebar");
+    newProjectsDiv.appendChild(projectButton);
+}, false);
+
+function createProjectButton(newProject) {
+    const button = document.createElement("button");
+    button.innerHTML = newProject.title;
+    
+    return button;
+}
 
 /**
  * Create a new project card
  */
-function createProject() {
-    let newProject = new Project();
-
+function createProject(newProject) {
     // projectCard div wraps the project
     const projectCard = document.createElement("div");
     projectCard.classList.add("projectCard");
@@ -124,9 +141,8 @@ function createProject() {
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
 
-    projectsDiv.appendChild(projectCard);
+    return projectCard;
 }
-// createProject();
 
 function createAllTodosProject() {
     let newProject = new Project("All todo-items", false);
