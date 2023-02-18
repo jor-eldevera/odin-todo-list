@@ -125,10 +125,20 @@ class TodoItem {
     }
 }
 
+// Event listener for the "View all todo-items" button
+document.getElementById("viewAllTodoItemsBtn").addEventListener("click", function (e) {
+    // Clear the "projects" div (central div)
+    projectsDiv.innerHTML = "";
+
+    // Append the all todo-items project
+    projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));    
+}, false);
+
 // Event listener for the "Create a new project" button
 document.getElementById("newProjectBtn").addEventListener("click", function (e) {
     // Create a new project
     let newProject = new Project();
+    projects.push(newProject);
     
     // Create new button in the sidebar
     const projectButton = createProjectButton(newProject);
@@ -209,20 +219,18 @@ function createProject(newProject) {
     return projectCard;
 }
 
-function createAllTodosProject() {
-    let newProject = new Project("All todo-items", false);
-
+function createAllTodosProject(newProject) {
     // projectCard div wraps the project
     const projectCard = document.createElement("div");
     projectCard.classList.add("projectCard");
-
+    
     const projectTitle = document.createElement("input");
     projectTitle.setAttribute("placeholder", "Title");
     projectTitle.classList.add("projectTitle");
     projectTitle.value = "All todo-items"
     projectTitle.readOnly = true;
     projectCard.appendChild(projectTitle);
-
+    
     const newTodoItemBtn = document.createElement("button");
     newTodoItemBtn.innerHTML = "+";
     newTodoItemBtn.addEventListener("click", function (e) {
@@ -233,11 +241,23 @@ function createAllTodosProject() {
     }, false);
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
-
-    projects.push(newProject);
+    
+    // If there are projects, add their todo items
+    if (projects.length > 1) {
+        for (let i = 0; i < projects.length; i++) {
+            const items = projects[i].todoItems;
+            console.log(projects[i].title);
+            for (let j = 0; j < items.length; j++) {
+                const newTodoItem = createTodoItem(projects[i], items[j].id);
+                projectCard.appendChild(newTodoItem);
+            }
+        }
+    }
     return projectCard;
 }
-projectsDiv.appendChild(createAllTodosProject());
+let allTodoItemsProject = new Project("All todo-items", false);
+projects.push(allTodoItemsProject);
+projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
 
 /**
  * Create a new todo item for the DOM
@@ -257,8 +277,9 @@ function createTodoItem(newProject, id) {
     } else {
         // If an id is passed, create a new todo item based on the existing id
         itemID = id;
-        const title = newProject.searchItems(itemID).title
-        if (title === "") {
+        console.log(id);
+        let title = newProject.searchItems(itemID).title;
+        if (title === "" || title === null) {
             todoItemLeftSide.setAttribute("placeholder", "New item");
         } else {
             todoItemLeftSide.value = title;
