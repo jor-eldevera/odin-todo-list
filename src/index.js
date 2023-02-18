@@ -113,6 +113,10 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
     // Create a project card
     const projectCard = createProject(newProject);
     
+    // Clear the "projects" div (central div)
+    console.log(projectsDiv.innerHTML)
+    projectsDiv.innerHTML = "";
+
     projectsDiv.appendChild(projectCard); // Attach Project card
     newProjectsDiv.appendChild(projectButton); // Attach Project button
 }, false);
@@ -126,6 +130,10 @@ function createProjectButton(newProject) {
     const button = document.createElement("button");
     button.innerHTML = newProject.title;
     button.id = "new-project-btn-" + newProject.id;
+
+    button.addEventListener("click", function (e) {
+
+    }, false);
     
     return button;
 }
