@@ -103,7 +103,7 @@ class Project {
 }
 
 class TodoItem {
-    complete = false;
+    _isComplete = false;
 
     constructor(title, id, category, dueDate, priority) {
         this._title = title;
@@ -113,12 +113,12 @@ class TodoItem {
         this.priority = priority;
     }
 
-    get complete() {
-        return this.complete;
+    get isComplete() {
+        return this._isComplete;
     }
 
-    set complete(isComplete) {
-        this.complete = isComplete;
+    set isComplete(isComplete) {
+        this._isComplete = isComplete;
     }
 
     get title() {
@@ -351,6 +351,18 @@ function createTodoItem(newProject, id) {
 
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
+    if (newProject.searchItems(itemID).isComplete === true) {
+        checkbox.checked = true;
+    } else {
+        checkbox.checked = false;
+    }
+    checkbox.addEventListener("change", function (e) {
+        if (this.checked) {
+            newProject.searchItems(itemID).isComplete = true;
+        } else {
+            newProject.searchItems(itemID).isComplete = false;
+        }
+    });
     todoItemRightSide.appendChild(checkbox);
 
     const deleteBtn = document.createElement("button");
