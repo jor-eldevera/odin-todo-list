@@ -43,6 +43,12 @@ h1 {
 	margin: 0 auto;
 }
 
+#new-projects-sidebar {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
 #content {
 	width: calc(100% - 164px);
 	padding: 10px 10px;
