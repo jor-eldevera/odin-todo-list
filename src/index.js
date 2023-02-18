@@ -67,6 +67,14 @@ class Project {
         return id;
     }
 
+    removeTodoItem(id) {
+        for (let i = 0; i < this.todoItems.length; i++) {
+            if (this.todoItems[i].id === id) {
+                this.todoItems.splice(i, 1);
+            }
+        }
+    }
+
     /**
      * Edits the title of a todo-item
      * @param {*} title is the new title
@@ -123,6 +131,10 @@ class TodoItem {
     get id() {
         return this._id;
     }
+
+    toString() {
+        return this._title;
+    }
 }
 
 // Event listener for the "View all todo-items" button
@@ -141,7 +153,9 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
     projects.push(newProject);
     
     // Create new button in the sidebar
+    const projectButtonWrapper = document.createElement("div");
     const projectButton = createProjectButton(newProject);
+    projectButtonWrapper.id = "project-button-wrapper-" + newProject.id;
     const newProjectsDiv = document.getElementById("new-projects-sidebar");
 
     // Create a project card
@@ -150,8 +164,12 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
     // Clear the "projects" div (central div)
     projectsDiv.innerHTML = "";
 
-    projectsDiv.appendChild(projectCard); // Attach Project card
-    newProjectsDiv.appendChild(projectButton); // Attach Project button
+    const deleteButton = createProjectDeleteButton(newProject);
+
+    projectsDiv.appendChild(projectCard); // Attach Project card to the center
+    newProjectsDiv.appendChild(projectButtonWrapper); // Attach new Project wrapper to the sidebar
+    projectButtonWrapper.appendChild(projectButton); // Attach button to the wrapper
+    projectButtonWrapper.appendChild(deleteButton);
 }, false);
 
 /**
@@ -169,6 +187,31 @@ function createProjectButton(newProject) {
         projectsDiv.appendChild(createProject(newProject));
     }, false);
     
+    return button;
+}
+
+function createProjectDeleteButton(newProject) {
+    const button = document.createElement("button");
+    button.innerHTML = "🗙";
+
+    button.addEventListener("click", function (e) {
+        // Delete the project from the projects array
+        for (let i = 0; i < projects.length; i++) {
+            if (projects[i].id === newProject.id) {
+                projects.splice(i, 1);
+            }
+        }
+        
+        // Remove the project from the page
+        console.log(projectsDiv.firstElementChild.firstElementChild.value);
+        if (newProject.title === projectsDiv.firstElementChild.firstElementChild.value) {
+            projectsDiv.innerHTML = "";
+            projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
+        }
+
+        // Remove the project from the sidebar
+        document.getElementById("project-button-wrapper-" + newProject.id).remove();
+    }, false);
     return button;
 }
 
@@ -246,7 +289,6 @@ function createAllTodosProject(newProject) {
     if (projects.length > 1) {
         for (let i = 0; i < projects.length; i++) {
             const items = projects[i].todoItems;
-            console.log(projects[i].title);
             for (let j = 0; j < items.length; j++) {
                 const newTodoItem = createTodoItem(projects[i], items[j].id);
                 projectCard.appendChild(newTodoItem);
@@ -277,7 +319,6 @@ function createTodoItem(newProject, id) {
     } else {
         // If an id is passed, create a new todo item based on the existing id
         itemID = id;
-        console.log(id);
         let title = newProject.searchItems(itemID).title;
         if (title === "" || title === null) {
             todoItemLeftSide.setAttribute("placeholder", "New item");
@@ -299,6 +340,14 @@ function createTodoItem(newProject, id) {
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
     todoItemRightSide.appendChild(checkbox);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "🗙";
+    deleteBtn.addEventListener("click", function (e) {
+        newProject.removeTodoItem(itemID);
+        todoItemWrapper.remove();
+    }, false);
+    todoItemRightSide.appendChild(deleteBtn);
 
     return todoItemWrapper;
 }
