@@ -49,6 +49,12 @@ h1 {
 	flex-direction: column;
 }
 
+.projectButtonWrapper {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 5px;
+}
+
 #content {
 	width: calc(100% - 164px);
 	padding: 10px 10px;

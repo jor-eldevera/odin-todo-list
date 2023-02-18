@@ -165,6 +165,7 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
     const projectButtonWrapper = document.createElement("div");
     const projectButton = createProjectButton(newProject);
     projectButtonWrapper.id = "project-button-wrapper-" + newProject.id;
+    projectButtonWrapper.classList.add("projectButtonWrapper");
     const newProjectsDiv = document.getElementById("new-projects-sidebar");
 
     // Create a project card
@@ -189,7 +190,7 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
  */
 function createProjectButton(newProject) {
     const button = document.createElement("button");
-    button.innerHTML = newProject.title;
+    button.innerHTML = "untitled";
     button.id = "new-project-btn-" + newProject.id;
 
     button.addEventListener("click", function (e) {
