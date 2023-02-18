@@ -39,6 +39,18 @@ class Project {
     }
 
     /**
+     * Checks whether or not the todoItems array contains items
+     * @returns true if the todoItems array contains items
+     */
+    hasTodoItems() {
+        if (this.todoItems.length === 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Adds a new todo-item to the todoItems array
      * @returns the id of the new todo-item
      */
@@ -85,8 +97,8 @@ class TodoItem {
     complete = false;
 
     constructor(title, id, category, dueDate, priority) {
-        this.title = title;
-        this.id = id;
+        this._title = title;
+        this._id = id;
         this.category = category;
         this.dueDate = dueDate;
         this.priority = priority;
@@ -98,6 +110,18 @@ class TodoItem {
 
     set complete(isComplete) {
         this.complete = isComplete;
+    }
+
+    get title() {
+        return this._title
+    }
+
+    set title(title) {
+        this._title = title
+    }
+
+    get id() {
+        return this._id;
     }
 }
 
@@ -174,6 +198,14 @@ function createProject(newProject) {
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
 
+    if (newProject.hasTodoItems()) {
+        let todoItems = newProject.todoItems;
+        for (let i = 0; i < todoItems.length; i++) {
+            const newTodoItem = createTodoItem(newProject, todoItems[i].id);
+            projectCard.appendChild(newTodoItem);
+        }
+    }
+
     return projectCard;
 }
 
@@ -211,16 +243,30 @@ projectsDiv.appendChild(createAllTodosProject());
  * Create a new todo item for the DOM
  * @returns a new todo item
  */
-function createTodoItem(newProject) {
+function createTodoItem(newProject, id) {
     const todoItemWrapper = document.createElement("div");
     todoItemWrapper.classList.add("todoItemWrapper");
 
-    const id = newProject.addNewTodoItem();
-
     const todoItemLeftSide = document.createElement("input");
-    todoItemLeftSide.setAttribute("placeholder", "New item");
+
+    let itemID;
+    if (id === undefined) {
+        // If an id is not passed, create a new todo item
+        itemID = newProject.addNewTodoItem();
+        todoItemLeftSide.setAttribute("placeholder", "New item");
+    } else {
+        // If an id is passed, create a new todo item based on the existing id
+        itemID = id;
+        const title = newProject.searchItems(itemID).title
+        if (title === "") {
+            todoItemLeftSide.setAttribute("placeholder", "New item");
+        } else {
+            todoItemLeftSide.value = title;
+        }
+    }
+
     todoItemLeftSide.addEventListener("input", function (e) {
-        newProject.editTodoItemTitle(e.target.value, id);
+        newProject.editTodoItemTitle(e.target.value, itemID);
     }, false);
     todoItemLeftSide.classList.add("todoItemLeftSide");
     todoItemWrapper.appendChild(todoItemLeftSide);
