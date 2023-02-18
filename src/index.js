@@ -114,7 +114,6 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
     const projectCard = createProject(newProject);
     
     // Clear the "projects" div (central div)
-    console.log(projectsDiv.innerHTML)
     projectsDiv.innerHTML = "";
 
     projectsDiv.appendChild(projectCard); // Attach Project card
@@ -132,7 +131,8 @@ function createProjectButton(newProject) {
     button.id = "new-project-btn-" + newProject.id;
 
     button.addEventListener("click", function (e) {
-
+        projectsDiv.innerHTML = "";
+        projectsDiv.appendChild(createProject(newProject));
     }, false);
     
     return button;
@@ -147,7 +147,11 @@ function createProject(newProject) {
     projectCard.classList.add("projectCard");
     
     const projectTitle = document.createElement("input");
-    projectTitle.setAttribute("placeholder", "Title");
+    if (newProject.title === "") {
+        projectTitle.setAttribute("placeholder", "Title");
+    } else {
+        projectTitle.value = newProject.title;
+    }
     projectTitle.classList.add("projectTitle");
     projectTitle.addEventListener("input", function (e) {
         newProject.title = e.target.value; // editable title
