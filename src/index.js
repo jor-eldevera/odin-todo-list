@@ -127,15 +127,20 @@ class TodoItem {
     set title(title) {
         this._title = title
     }
-
+    
     get id() {
         return this._id;
     }
-
+    
     toString() {
         return this._title;
     }
 }
+
+// Create the "All todo-items" project and append it to the page (home page)
+let allTodoItemsProject = new Project("All todo-items", false);
+projects.push(allTodoItemsProject);
+projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
 
 // Event listener for the "View all todo-items" button
 document.getElementById("viewAllTodoItemsBtn").addEventListener("click", function (e) {
@@ -203,8 +208,9 @@ function createProjectDeleteButton(newProject) {
         }
         
         // Remove the project from the page
-        console.log(projectsDiv.firstElementChild.firstElementChild.value);
-        if (newProject.title === projectsDiv.firstElementChild.firstElementChild.value) {
+        // or reload the "all todo-items" div when deleting a project
+        if (newProject.title === projectsDiv.firstElementChild.firstElementChild.value
+            || projectsDiv.firstElementChild.firstElementChild.value === allTodoItemsProject.title) {
             projectsDiv.innerHTML = "";
             projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
         }
@@ -297,12 +303,11 @@ function createAllTodosProject(newProject) {
     }
     return projectCard;
 }
-let allTodoItemsProject = new Project("All todo-items", false);
-projects.push(allTodoItemsProject);
-projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
 
 /**
  * Create a new todo item for the DOM
+ * @param {*} newProject is the project that this function is operating on
+ * @param {*} id is the id of the todo item being created. Do not pass an id when creating a new todo item
  * @returns a new todo item
  */
 function createTodoItem(newProject, id) {
