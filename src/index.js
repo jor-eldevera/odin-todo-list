@@ -8,13 +8,18 @@ class Project {
     todoItems = [];
 
     constructor(title, titleIsEditable) {
+        // Project title
         if (title === undefined) {
             this._projectTitle = "";
         } else {
             this._projectTitle = title;
         }
 
+        // True if title is editable
         this._titleIsEditable = titleIsEditable
+
+        // Project id
+        this._id = Math.floor(Math.random() * 10000);
     }
 
     get todoItems() {
@@ -27,6 +32,10 @@ class Project {
 
     set title(title) {
         this._projectTitle = title;
+    }
+
+    get id() {
+        return this._id;
     }
 
     /**
@@ -92,24 +101,31 @@ class TodoItem {
     }
 }
 
-// Add event listener to the new project button
+// Event listener for the "Create a new project" button
 document.getElementById("newProjectBtn").addEventListener("click", function (e) {
     // Create a new project
     let newProject = new Project();
     
-    // Create a project card
-    const projectCard = createProject(newProject);
-    projectsDiv.appendChild(projectCard);
-
     // Create new button in the sidebar
     const projectButton = createProjectButton(newProject);
     const newProjectsDiv = document.getElementById("new-projects-sidebar");
-    newProjectsDiv.appendChild(projectButton);
+
+    // Create a project card
+    const projectCard = createProject(newProject);
+    
+    projectsDiv.appendChild(projectCard); // Attach Project card
+    newProjectsDiv.appendChild(projectButton); // Attach Project button
 }, false);
 
+/**
+ * Creates a new button for the sidebar
+ * @param {Project} newProject is a new Project object
+ * @returns the new button
+ */
 function createProjectButton(newProject) {
     const button = document.createElement("button");
     button.innerHTML = newProject.title;
+    button.id = "new-project-btn-" + newProject.id;
     
     return button;
 }
@@ -127,6 +143,11 @@ function createProject(newProject) {
     projectTitle.classList.add("projectTitle");
     projectTitle.addEventListener("input", function (e) {
         newProject.title = e.target.value; // editable title
+
+        // Edits the corresponding button on the sidebar
+        const sidebarBtn = document.getElementById("new-project-btn-" + newProject.id);
+        sidebarBtn.innerHTML = newProject.title;
+
     }, false);
     projectCard.appendChild(projectTitle);
 
