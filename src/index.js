@@ -3,6 +3,7 @@ import "./style.css"
 const projectsDiv = document.querySelector("#projects"); // div in the center of the page
 
 let projects = [];
+let activeProject;
 
 class Project {
     todoItems = [];
@@ -140,12 +141,15 @@ class TodoItem {
 // Create the "All todo-items" project and append it to the page (home page)
 let allTodoItemsProject = new Project("All todo-items", false);
 projects.push(allTodoItemsProject);
+activeProject = allTodoItemsProject;
 projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
 
 // Event listener for the "View all todo-items" button
 document.getElementById("viewAllTodoItemsBtn").addEventListener("click", function (e) {
     // Clear the "projects" div (central div)
     projectsDiv.innerHTML = "";
+
+    activeProject = allTodoItemsProject;
 
     // Append the all todo-items project
     projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));    
@@ -171,6 +175,7 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
 
     const deleteButton = createProjectDeleteButton(newProject);
 
+    activeProject = newProject;
     projectsDiv.appendChild(projectCard); // Attach Project card to the center
     newProjectsDiv.appendChild(projectButtonWrapper); // Attach new Project wrapper to the sidebar
     projectButtonWrapper.appendChild(projectButton); // Attach button to the wrapper
@@ -189,6 +194,7 @@ function createProjectButton(newProject) {
 
     button.addEventListener("click", function (e) {
         projectsDiv.innerHTML = "";
+        activeProject = newProject;
         projectsDiv.appendChild(createProject(newProject));
     }, false);
     
@@ -209,9 +215,10 @@ function createProjectDeleteButton(newProject) {
         
         // Remove the project from the page
         // or reload the "all todo-items" div when deleting a project
-        if (newProject.title === projectsDiv.firstElementChild.firstElementChild.value
+        if (newProject.title === activeProject.title
             || projectsDiv.firstElementChild.firstElementChild.value === allTodoItemsProject.title) {
             projectsDiv.innerHTML = "";
+            activeProject = allTodoItemsProject;
             projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
         }
 
