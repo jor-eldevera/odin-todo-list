@@ -192,6 +192,7 @@ function createProjectButton(newProject) {
     const button = document.createElement("button");
     button.innerHTML = "untitled";
     button.id = "new-project-btn-" + newProject.id;
+    button.classList.add("projectBtn");
 
     button.addEventListener("click", function (e) {
         projectsDiv.innerHTML = "";
@@ -205,6 +206,7 @@ function createProjectButton(newProject) {
 function createProjectDeleteButton(newProject) {
     const button = document.createElement("button");
     button.innerHTML = "🗙";
+    button.classList.add("deleteBtn");
 
     button.addEventListener("click", function (e) {
         // Delete the project from the projects array
@@ -368,6 +370,7 @@ function createTodoItem(newProject, id) {
 
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "🗙";
+    deleteBtn.classList.add("deleteBtn");
     deleteBtn.addEventListener("click", function (e) {
         newProject.removeTodoItem(itemID);
         todoItemWrapper.remove();

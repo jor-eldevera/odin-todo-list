@@ -1,3 +1,8 @@
+:root {
+	--button-color: #DADCE7;
+	--button-hover-color: #E6E8EF;
+}
+
 html {
 	height: 100%;
 }
@@ -35,12 +40,30 @@ h1 {
 	padding: 10px;
 }
 
+#viewAllTodoItemsBtn {
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	background-color: var(--button-color);
+}
+#viewAllTodoItemsBtn:hover {
+	background-color: var(--button-hover-color);
+}
+
 #bottom-left-sidebar {
 	padding: 10px;
 }
 
 #newProjectBtn {
 	margin: 0 auto;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	background-color: var(--button-color);
+}
+
+#newProjectBtn:hover {
+	background-color: var(--button-hover-color);
 }
 
 #new-projects-sidebar {
@@ -53,6 +76,16 @@ h1 {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 5px;
+}
+
+.projectBtn {
+	border: none;
+	border-radius: 5px;
+	background-color: var(--button-color);
+}
+
+.projectBtn:hover {
+	background-color: var(--button-hover-color);
 }
 
 #content {
@@ -89,6 +122,27 @@ h1 {
     font-size: 30px;
 }
 
+.newTodoItemBtn {
+	border: none;
+	border-radius: 5px;
+	background-color: var(--button-color);
+	margin-bottom: 5px;
+}
+
+.newTodoItemBtn:hover {
+	background-color: var(--button-hover-color);
+}
+
+.deleteBtn {
+	background-color: var(--button-color);
+	border: none;
+	border-radius: 5px;
+}
+
+.deleteBtn:hover {
+	background-color: var(--button-hover-color);
+}
+
 .todoItemLeftSide {
     padding: 0;
 	background: none;
@@ -105,4 +159,6 @@ h1 {
 .todoItemWrapper {
     display: flex;
     justify-content: space-between;
+
+	margin-bottom: 5px;
 }
