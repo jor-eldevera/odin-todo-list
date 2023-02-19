@@ -301,14 +301,12 @@ function createAllTodosProject(newProject) {
     newTodoItemBtn.classList.add("newTodoItemBtn");
     projectCard.appendChild(newTodoItemBtn);
     
-    // If there are projects, add their todo items
-    if (projects.length > 1) {
-        for (let i = 0; i < projects.length; i++) {
-            const items = projects[i].todoItems;
-            for (let j = 0; j < items.length; j++) {
-                const newTodoItem = createTodoItem(projects[i], items[j].id);
-                projectCard.appendChild(newTodoItem);
-            }
+    // Add todo items
+    for (let i = 0; i < projects.length; i++) {
+        const items = projects[i].todoItems;
+        for (let j = 0; j < items.length; j++) {
+            const newTodoItem = createTodoItem(projects[i], items[j].id);
+            projectCard.appendChild(newTodoItem);
         }
     }
     return projectCard;
