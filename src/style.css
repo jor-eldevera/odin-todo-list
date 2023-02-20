@@ -2,6 +2,8 @@
 	/* --button-color: #DADCE7; */
 	--button-color: #f1f2f6;
 	--button-hover-color: #E6E8EF;
+
+	--sidebar-width: 164px;
 }
 
 html {
@@ -31,7 +33,7 @@ h1 {
 }
 
 #left-sidebar {
-	width: 164px;
+	width: var(--sidebar-width);
 	border-right: 1px solid lightgray;
 }
 
@@ -91,16 +93,12 @@ h1 {
 }
 
 #content {
-	width: calc(100% - 164px);
+	width: calc(100% - var(--sidebar-width));
 	padding: 10px 10px;
 }
 
 #projects {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
-    gap: 15px;
-
-	width: 40%;
+	width: 50%;
 	margin: 0px auto;
 	padding: 10px;
 	background-color: white;
@@ -165,7 +163,7 @@ h1 {
 .categoryLabel {
 	max-height: 22px;
 	min-width: 50px;
-	max-width: 60px;
+	max-width: 80px;
 	font-size: 10px;
 	align-self: center;
 	background-color: var(--button-color);
