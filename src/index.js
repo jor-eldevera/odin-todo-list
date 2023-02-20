@@ -2,6 +2,8 @@ import "./style.css"
 
 const projectsDiv = document.querySelector("#projects"); // div in the center of the page
 
+const homepageCardTitle = "All todo-items";
+
 let projects = [];
 let activeProject;
 
@@ -63,7 +65,12 @@ class Project {
             return;
         }
 
-        this.todoItems.push(new TodoItem("", id, this._projectTitle, "", ""));
+        if (this._projectTitle === homepageCardTitle) {
+            this.todoItems.push(new TodoItem("", id, "uncategorized", "", ""));
+        } else {
+            this.todoItems.push(new TodoItem("", id, this._projectTitle, "", ""));
+        }
+        
 
         return id;
     }
@@ -139,7 +146,7 @@ class TodoItem {
 }
 
 // Create the "All todo-items" project and append it to the page (home page)
-let allTodoItemsProject = new Project("All todo-items", false);
+let allTodoItemsProject = new Project(homepageCardTitle, false);
 projects.push(allTodoItemsProject);
 activeProject = allTodoItemsProject;
 projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
@@ -349,6 +356,11 @@ function createTodoItem(newProject, id) {
     const todoItemRightSide = document.createElement("div");
     todoItemRightSide.classList.add("todoItemRightSide");
     todoItemWrapper.appendChild(todoItemRightSide);
+
+    const categoryLabel = document.createElement("div");
+    categoryLabel.innerHTML = newProject.searchItems(itemID).category;
+    categoryLabel.classList.add("categoryLabel");
+    todoItemRightSide.appendChild(categoryLabel);
 
     const checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");

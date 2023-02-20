@@ -158,6 +158,23 @@ h1 {
     font-size: 15px;
 }
 
+.todoItemRightSide {
+	display: flex;
+}
+
+.categoryLabel {
+	max-height: 22px;
+	min-width: 50px;
+	max-width: 60px;
+	font-size: 10px;
+	align-self: center;
+	background-color: var(--button-color);
+	border-radius: 5px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
 .todoItemWrapper {
     display: flex;
     justify-content: space-between;
