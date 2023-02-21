@@ -163,6 +163,7 @@ h1 {
 .categoryLabel {
 	max-height: 22px;
 	min-width: 50px;
+	text-align: center;
 	max-width: 80px;
 	font-size: 10px;
 	align-self: center;
