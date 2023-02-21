@@ -22,7 +22,6 @@ class Project {
         this._titleIsEditable = titleIsEditable
 
         // Project id
-        // this._id = Math.floor(Math.random() * 10000);
         this._id = this.getUniqueId();
     }
 
@@ -76,6 +75,10 @@ class Project {
         return id;
     }
 
+    /**
+     * Removes a TodoItem from this object's todoItems array
+     * @param {*} id is the id of the TodoItem to be removed
+     */
     removeTodoItem(id) {
         for (let i = 0; i < this.todoItems.length; i++) {
             if (this.todoItems[i].id === id) {
@@ -246,6 +249,11 @@ function createProjectButton(newProject) {
     return button;
 }
 
+/**
+ * Creates a delete button for a project
+ * @param {*} newProject is the project who will be deleted by this button
+ * @returns a button that deletes the project passed to this function
+ */
 function createProjectDeleteButton(newProject) {
     const button = document.createElement("button");
     button.innerHTML = "🗙";
@@ -332,6 +340,11 @@ function createProject(newProject) {
     return projectCard;
 }
 
+/**
+ * Create the "All todo-items"/homepage card
+ * @param {} newProject is the "All todo-items" project
+ * @returns the "All todo-items" card
+ */
 function createAllTodosProject(newProject) {
     // projectCard div wraps the project
     const projectCard = document.createElement("div");
