@@ -22,7 +22,8 @@ class Project {
         this._titleIsEditable = titleIsEditable
 
         // Project id
-        this._id = Math.floor(Math.random() * 10000);
+        // this._id = Math.floor(Math.random() * 10000);
+        this._id = this.getUniqueId();
     }
 
     get todoItems() {
@@ -117,6 +118,22 @@ class Project {
         }
 
         return null;
+    }
+
+    /**
+     * Generates a unique id
+     * @returns a unique id
+     */
+    getUniqueId() {
+        let newId;
+        let existingIDs = projects.map(function(obj) {
+            return obj.id;
+        }); // Get an array of all existng ids
+        do {
+            // Generate new ids while the id is not unique
+            newId = Math.floor(Math.random() * 10000);
+        } while (existingIDs.indexOf(newId) !== -1);
+        return newId;
     }
 }
 
