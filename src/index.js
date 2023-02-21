@@ -94,6 +94,17 @@ class Project {
     }
 
     /**
+     * Edits the category of a todo-item
+     * @param {*} category is the new category
+     * @param {*} id is the id of the todo-item to be changed
+     */
+    editAllTodoItemCategories(category) {
+        for (let item of this.todoItems) {
+            item.category = category;
+        }
+    }
+
+    /**
      * Searches for a TodoItem in this project's todoItems array
      * @param {*} id - The id of the TodoItem
      * @returns The found TodoItem or null if the item isn't found
@@ -115,7 +126,7 @@ class TodoItem {
     constructor(title, id, category, dueDate, priority) {
         this._title = title;
         this._id = id;
-        this.category = category;
+        this._category = category;
         this.dueDate = dueDate;
         this.priority = priority;
     }
@@ -138,6 +149,14 @@ class TodoItem {
     
     get id() {
         return this._id;
+    }
+
+    set category(category) {
+        this._category = category
+    }
+
+    get category() {
+        return this._category;
     }
     
     toString() {
@@ -256,6 +275,17 @@ function createProject(newProject) {
     projectTitle.addEventListener("input", function (e) {
         newProject.title = e.target.value; // editable title
 
+        // Edit the labels and category-properties on each todo-item
+        const labels = document.getElementsByClassName("projectId-" + newProject.id);
+        for (let i = 0; i < labels.length; i++) {
+            // Edit labels
+            labels[i].innerHTML = newProject.title;
+        }
+        for (let i = 0; i < newProject.todoItems.length; i++) {
+            // Edit category property in each todo-item
+            newProject.editAllTodoItemCategories(newProject.title);
+        }
+
         // Edits the corresponding button on the sidebar
         const sidebarBtn = document.getElementById("new-project-btn-" + newProject.id);
         sidebarBtn.innerHTML = newProject.title;
@@ -360,6 +390,7 @@ function createTodoItem(newProject, id) {
     const categoryLabel = document.createElement("div");
     categoryLabel.innerHTML = newProject.searchItems(itemID).category;
     categoryLabel.classList.add("categoryLabel");
+    categoryLabel.classList.add("projectId-" + newProject.id); // for use with labels 
     todoItemRightSide.appendChild(categoryLabel);
 
     const checkbox = document.createElement("input");
@@ -370,7 +401,7 @@ function createTodoItem(newProject, id) {
         checkbox.checked = false;
     }
     checkbox.addEventListener("change", function (e) {
-        if (this.checked) {
+        if (this.checked) {s
             newProject.searchItems(itemID).isComplete = true;
         } else {
             newProject.searchItems(itemID).isComplete = false;
