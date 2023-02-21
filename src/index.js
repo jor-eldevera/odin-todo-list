@@ -401,7 +401,7 @@ function createTodoItem(newProject, id) {
         checkbox.checked = false;
     }
     checkbox.addEventListener("change", function (e) {
-        if (this.checked) {s
+        if (this.checked) {
             newProject.searchItems(itemID).isComplete = true;
         } else {
             newProject.searchItems(itemID).isComplete = false;
