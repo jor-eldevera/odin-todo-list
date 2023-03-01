@@ -24,6 +24,7 @@ header {
 
 h1 {
 	margin: 0px;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 #body-container {
@@ -54,7 +55,19 @@ h1 {
 }
 
 #bottom-left-sidebar {
+	position: relative;
+	height: calc(100% - 150px - 43px);
 	padding: 10px;
+}
+
+#madeBy {
+	position: absolute;
+	bottom: 0;
+
+	font-family: sans-serif;
+	font-size: 10px;
+
+	margin: 0 20px;
 }
 
 #newProjectBtn {
