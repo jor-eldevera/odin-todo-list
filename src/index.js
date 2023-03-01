@@ -1,217 +1,65 @@
 import "./style.css"
+import Project from "./Project";
+import Storage from "./Storage";
 
 const projectsDiv = document.querySelector("#projects"); // div in the center of the page
 
-const homepageCardTitle = "All todo-items";
+export const homepageCardTitle = "All todo-items"; // The title of the homepage card
+export const storageKeyName = "todoLists"
 
-let projects = [];
+export let projects = [];
 let activeProject;
 
-class Project {
-    todoItems = [];
-
-    constructor(title, titleIsEditable) {
-        // Project title
-        if (title === undefined) {
-            this._projectTitle = "";
-        } else {
-            this._projectTitle = title;
-        }
-
-        // True if title is editable
-        this._titleIsEditable = titleIsEditable
-
-        // Project id
-        this._id = this.getUniqueId();
-    }
-
-    get todoItems() {
-        return this.todoItems;
-    }
-
-    get title() {
-        return this._projectTitle;
-    }
-
-    set title(title) {
-        this._projectTitle = title;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    /**
-     * Checks whether or not the todoItems array contains items
-     * @returns true if the todoItems array contains items
-     */
-    hasTodoItems() {
-        if (this.todoItems.length === 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Adds a new todo-item to the todoItems array
-     * @returns the id of the new todo-item
-     */
-    addNewTodoItem() {
-        const id = Math.floor(Math.random() * 10000);
-
-        if (this.searchItems(id)) {
-            console.log("There is already an item in this list with the id: " + id);
-            return;
-        }
-
-        if (this._projectTitle === homepageCardTitle) {
-            this.todoItems.push(new TodoItem("", id, "uncategorized", "", ""));
-        } else {
-            this.todoItems.push(new TodoItem("", id, this._projectTitle, "", ""));
-        }
-        
-
-        return id;
-    }
-
-    /**
-     * Removes a TodoItem from this object's todoItems array
-     * @param {*} id is the id of the TodoItem to be removed
-     */
-    removeTodoItem(id) {
-        for (let i = 0; i < this.todoItems.length; i++) {
-            if (this.todoItems[i].id === id) {
-                this.todoItems.splice(i, 1);
-            }
-        }
-    }
-
-    /**
-     * Edits the title of a todo-item
-     * @param {*} title is the new title
-     * @param {*} id is the id of the todo-item to be changed
-     */
-    editTodoItemTitle(title, id) {
-        let item = this.searchItems(id);
-        item.title = title;
-    }
-
-    /**
-     * Edits the category of a todo-item
-     * @param {*} category is the new category
-     * @param {*} id is the id of the todo-item to be changed
-     */
-    editAllTodoItemCategories(category) {
-        for (let item of this.todoItems) {
-            item.category = category;
-        }
-    }
-
-    /**
-     * Searches for a TodoItem in this project's todoItems array
-     * @param {*} id - The id of the TodoItem
-     * @returns The found TodoItem or null if the item isn't found
-     */
-    searchItems(id) {
-        for (let item of this.todoItems) {
-            if (item.id === id) {
-                return item;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Generates a unique id
-     * @returns a unique id
-     */
-    getUniqueId() {
-        let newId;
-        let existingIDs = projects.map(function(obj) {
-            return obj.id;
-        }); // Get an array of all existng ids
-        do {
-            // Generate new ids while the id is not unique
-            newId = Math.floor(Math.random() * 10000);
-        } while (existingIDs.indexOf(newId) !== -1);
-        return newId;
-    }
-}
-
-class TodoItem {
-    _isComplete = false;
-
-    constructor(title, id, category, dueDate, priority) {
-        this._title = title;
-        this._id = id;
-        this._category = category;
-        this.dueDate = dueDate;
-        this.priority = priority;
-    }
-
-    get isComplete() {
-        return this._isComplete;
-    }
-
-    set isComplete(isComplete) {
-        this._isComplete = isComplete;
-    }
-
-    get title() {
-        return this._title
-    }
-
-    set title(title) {
-        this._title = title
-    }
-    
-    get id() {
-        return this._id;
-    }
-
-    set category(category) {
-        this._category = category
-    }
-
-    get category() {
-        return this._category;
-    }
-    
-    toString() {
-        return this._title;
-    }
-}
-
-// Create the "All todo-items" project and append it to the page (home page)
-let allTodoItemsProject = new Project(homepageCardTitle, false);
+// Create the "All todo-items" project
+export let allTodoItemsProject = new Project(homepageCardTitle, false);
 projects.push(allTodoItemsProject);
 activeProject = allTodoItemsProject;
+
+// Load data from localStorage to "projects" array
+let savedData = localStorage.getItem(storageKeyName);
+if (savedData !== null) {
+    Storage.loadData(savedData);
+}
+// Load the page with data
 projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
+// Load sidebar with projects
+for (let i = 1; i < projects.length; i++) {
+    const projectButtonWrapper = createProjectBtnWrapper(projects[i]);
+    const projectButton = createProjectButton(projects[i]);
+    const deleteButton = createProjectDeleteButton(projects[i]);
+    
+    const newProjectsDiv = document.getElementById("new-projects-sidebar");
+    
+    newProjectsDiv.appendChild(projectButtonWrapper); // Attach new Project wrapper to the sidebar
+    projectButtonWrapper.appendChild(projectButton); // Attach button to the wrapper
+    projectButtonWrapper.appendChild(deleteButton);
+}
 
 // Event listener for the "View all todo-items" button
 document.getElementById("viewAllTodoItemsBtn").addEventListener("click", function (e) {
     // Clear the "projects" div (central div)
     projectsDiv.innerHTML = "";
-
+    
     activeProject = allTodoItemsProject;
-
+    
     // Append the all todo-items project
-    projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));    
+    projectsDiv.appendChild(createAllTodosProject(allTodoItemsProject));
 }, false);
 
-// Event listener for the "Create a new project" button
+// Event listener for the "Create new project" button
 document.getElementById("newProjectBtn").addEventListener("click", function (e) {
     // Create a new project
     let newProject = new Project();
     projects.push(newProject);
+
+    // Save data to localStorage
+    Storage.saveData();
     
     // Create new button in the sidebar
-    const projectButtonWrapper = document.createElement("div");
+    const projectButtonWrapper = createProjectBtnWrapper(newProject);
     const projectButton = createProjectButton(newProject);
-    projectButtonWrapper.id = "project-button-wrapper-" + newProject.id;
-    projectButtonWrapper.classList.add("projectButtonWrapper");
+    const deleteButton = createProjectDeleteButton(newProject);
+
     const newProjectsDiv = document.getElementById("new-projects-sidebar");
 
     // Create a project card
@@ -219,8 +67,6 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
     
     // Clear the "projects" div (central div)
     projectsDiv.innerHTML = "";
-
-    const deleteButton = createProjectDeleteButton(newProject);
 
     activeProject = newProject;
     projectsDiv.appendChild(projectCard); // Attach Project card to the center
@@ -230,13 +76,29 @@ document.getElementById("newProjectBtn").addEventListener("click", function (e) 
 }, false);
 
 /**
+ * Creates a new wrapper for a new project button in the sidebar
+ * @param {Project} newProject is a new Project object
+ * @returns the new wrapper
+ */
+function createProjectBtnWrapper(newProject) {
+    const projectButtonWrapper = document.createElement("div");
+    projectButtonWrapper.id = "project-button-wrapper-" + newProject.id;
+    projectButtonWrapper.classList.add("projectButtonWrapper");
+    return projectButtonWrapper;
+}
+
+/**
  * Creates a new button for the sidebar
  * @param {Project} newProject is a new Project object
  * @returns the new button
  */
 function createProjectButton(newProject) {
     const button = document.createElement("button");
-    button.innerHTML = "untitled";
+    if (newProject._projectTitle === "") {
+        button.innerHTML = "untitled";
+    } else {
+        button.innerHTML = newProject._projectTitle;
+    }
     button.id = "new-project-btn-" + newProject.id;
     button.classList.add("projectBtn");
 
@@ -251,7 +113,7 @@ function createProjectButton(newProject) {
 
 /**
  * Creates a delete button for a project
- * @param {*} newProject is the project who will be deleted by this button
+ * @param {Project} newProject is the project who will be deleted by this button
  * @returns a button that deletes the project passed to this function
  */
 function createProjectDeleteButton(newProject) {
@@ -278,6 +140,9 @@ function createProjectDeleteButton(newProject) {
 
         // Remove the project from the sidebar
         document.getElementById("project-button-wrapper-" + newProject.id).remove();
+
+        // Save data to localStorage
+        Storage.saveData();
     }, false);
     return button;
 }
@@ -299,6 +164,9 @@ function createProject(newProject) {
     projectTitle.classList.add("projectTitle");
     projectTitle.addEventListener("input", function (e) {
         newProject.title = e.target.value; // editable title
+
+        // Save data to localStorage
+        Storage.saveData();
 
         // Edit the labels and category-properties on each todo-item
         const labels = document.getElementsByClassName("projectId-" + newProject.id);
@@ -409,6 +277,9 @@ function createTodoItem(newProject, id) {
 
     todoItemLeftSide.addEventListener("input", function (e) {
         newProject.editTodoItemTitle(e.target.value, itemID);
+
+        // Save data to localStorage
+        Storage.saveData();
     }, false);
     todoItemLeftSide.classList.add("todoItemLeftSide");
     todoItemWrapper.appendChild(todoItemLeftSide);
@@ -436,6 +307,9 @@ function createTodoItem(newProject, id) {
         } else {
             newProject.searchItems(itemID).isComplete = false;
         }
+
+        // Save data to localStorage
+        Storage.saveData();
     });
     todoItemRightSide.appendChild(checkbox);
 
@@ -445,8 +319,14 @@ function createTodoItem(newProject, id) {
     deleteBtn.addEventListener("click", function (e) {
         newProject.removeTodoItem(itemID);
         todoItemWrapper.remove();
+
+        // Save data to localStorage
+        Storage.saveData();
     }, false);
     todoItemRightSide.appendChild(deleteBtn);
+
+    // Save data to localStorage
+    Storage.saveData();
 
     return todoItemWrapper;
 }
